@@ -109,7 +109,7 @@ bool CCS811::read(ccs811_co2_thresholds_t& thresholds) {
  * Read the measured eCO2 level from the sensor.
  * @param data: Container to read data into.
  */
-bool CCS811::read(ccs811_eCO2_data_t& data) { read((uint8_t*)&data, ALG_RESULT_DATA, sizeof(data)); }
+bool CCS811::read(ccs811_eCO2_data_t& data) { return read((uint8_t*)&data, ALG_RESULT_DATA, sizeof(data)); }
 
 /**
  * Read the latest eTVOC measurement from the sensor.
@@ -117,66 +117,69 @@ bool CCS811::read(ccs811_eCO2_data_t& data) { read((uint8_t*)&data, ALG_RESULT_D
  */
 bool CCS811::read(ccs811_eTVOC_data_t& data) {
     ccs811_air_quality_data_t output;
-    read(output.raw, ALG_RESULT_DATA, sizeof(output.raw));
+    bool success = read(output.raw, ALG_RESULT_DATA, sizeof(output.raw));
     data = output.eTVOC_reading;
+    return success;
 }
 
 /**
  * Read the raw data from the sensor.
  * @param data: Container to read the data into.
  */
-bool CCS811::read(ccs811_raw_data_t& data) { read((uint8_t*)&data, RAW_DATA, sizeof(data)); }
+bool CCS811::read(ccs811_raw_data_t& data) { return read((uint8_t*)&data, RAW_DATA, sizeof(data)); }
 
 /**
  * Read the latest air quality measurements from the sensor.
  * @param data: Container to read data into.
  */
-bool CCS811::read(ccs811_air_quality_data_t& data) { read(data.raw, ALG_RESULT_DATA, sizeof(data)); }
+bool CCS811::read(ccs811_air_quality_data_t& data) { return read(data.raw, ALG_RESULT_DATA, sizeof(data)); }
 
 /**
  * Read the latest data from the sensor.
  * All measurements, including raw data, status, and error registers are included.
  * @param data: Container to read data into.
  */
-bool CCS811::read(ccs811_all_data_t& data) { read(data.raw, ALG_RESULT_DATA, sizeof(data)); }
+bool CCS811::read(ccs811_all_data_t& data) { return read(data.raw, ALG_RESULT_DATA, sizeof(data)); }
 
 /**
  * Read the sensor baseline calibration? data from the sensor.
  * @param baseline: Container to read the data into.
  */
-bool CCS811::read(ccs811_baseline_t& baseline) { read(baseline.raw, BASELINE, sizeof(baseline)); }
+bool CCS811::read(ccs811_baseline_t& baseline) { return read(baseline.raw, BASELINE, sizeof(baseline)); }
 
 /**
  * Read the hardware ID from the sensor.
  * @param id: Container to read id into.
  */
-bool CCS811::read(ccs811_hardware_id_t& id) { read(&id.raw, HW_ID); }
+bool CCS811::read(ccs811_hardware_id_t& id) { return read(&id.raw, HW_ID); }
 
 /**
  * Read the hardware version from the sensor.
  * @param version: Container to read version information into.
  */
-bool CCS811::read(ccs811_hardware_version_t& version) { read(&version.raw, HW_VERSION, sizeof(version)); }
+bool CCS811::read(ccs811_hardware_version_t& version) { return read(&version.raw, HW_VERSION, sizeof(version)); }
 
 /**
  * Read the firmware version from the sensor.
  * @param version: Container to read the firmware version into.
  */
-bool CCS811::read(ccs811_firmware_boot_version_t& version) { read(version.raw, FW_BOOT_VERSION, sizeof(version)); }
+bool CCS811::read(ccs811_firmware_boot_version_t& version) {
+    return read(version.raw, FW_BOOT_VERSION, sizeof(version));
+}
 
 /**
  * Read the firmware application version from the sensor.
  * @param version: Container to read the version information into.
  */
 bool CCS811::read(ccs811_firmware_application_version_t& version) {
-    read(version.raw, FW_APP_VERSION, sizeof(version));
+    return read(version.raw, FW_APP_VERSION, sizeof(version));
 }
 
 /**
  * Read the error register from the sensor.
  * @param error: Container to read error flags into.
  */
-bool CCS811::read(ccs811_error_t& error) { read(&error.raw, ERROR_ID); }
+bool CCS811::read(ccs811_error_t& error) { return read(&error.raw, ERROR_ID); }
 
 ////////////////////////////////////////////////////////////////////////////////
 
